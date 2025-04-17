@@ -1,0 +1,39 @@
+/* Import Tailwind CSS base styles, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Define CSS variables for theming */
+:root {
+  /* Text color in RGB format */
+  --foreground-rgb: 0, 0, 0;
+  /* Gradient start color in RGB format */
+  --background-start-rgb: 214, 219, 220;
+  /* Gradient end color in RGB format */
+  --background-end-rgb: 255, 255, 255;
+}
+
+/* Dark mode color scheme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode text color */
+    --foreground-rgb: 255, 255, 255;
+    /* Dark mode gradient start color */
+    --background-start-rgb: 0, 0, 0;
+    /* Dark mode gradient end color */
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+/* Base body styles */
+body {
+  /* Set text color using CSS variable */
+  color: rgb(var(--foreground-rgb));
+  /* Create gradient background using CSS variables */
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+} 

@@ -26,12 +26,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
+    // HTML document with English language setting
     <html lang="en">
+      {/* Body with minimum height and light gray background */}
       <body className="min-h-screen bg-gray-50">
+        {/* Header component that appears on all pages */}
         <Header />
+        {/* Main content area that will contain the page-specific content */}
         <main>
           {children}
         </main>
+        {/* Footer component that appears on all pages */}
         <Footer />
       </body>
     </html>

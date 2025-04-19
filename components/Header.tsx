@@ -23,7 +23,7 @@ export default function Header() {
           </Link>
 
           {/* Navigation */}
-          <nav className="flex space-x-8">
+          <nav className="flex items-center space-x-8">
             <Link
               href="/"
               className={`text-gray-600 hover:text-gray-900 ${
@@ -41,12 +41,20 @@ export default function Header() {
               Games
             </Link>
             <Link
-              href="/about"
+              href="/contribute"
               className={`text-gray-600 hover:text-gray-900 ${
-                pathname === '/about' ? 'text-blue-600 font-medium' : ''
+                pathname === '/contribute' ? 'text-blue-600 font-medium' : ''
               }`}
             >
-              About
+              Contribute Seed
+            </Link>
+            <Link
+              href="/profile"
+              className={`text-gray-600 hover:text-gray-900 ${
+                pathname === '/profile' ? 'text-blue-600 font-medium' : ''
+              }`}
+            >
+              Profile
             </Link>
           </nav>
         </div>

@@ -7,82 +7,54 @@
 
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-
-// Sample Minecraft seeds data
-const minecraftSeeds = [
-  {
-    id: 1,
-    seed: '123456789',
-    title: 'Speedrun Paradise',
-    description: 'Perfect for speedrunners - stronghold at spawn, nether fortress nearby, and village with blacksmith.',
-    features: [
-      'Stronghold at spawn',
-      'Nether fortress within 200 blocks',
-      'Village with blacksmith',
-      'Desert temple nearby'
-    ],
-    imageUrl: 'https://via.placeholder.com/400x300?text=Minecraft+Speedrun',
-    version: '1.20.4',
-    rating: 4.8,
-    Saves: 1250
-  },
-  {
-    id: 2,
-    seed: '987654321',
-    title: 'Builder\'s Dream',
-    description: 'Large flat plains biome with nearby mountains and ocean for the perfect building location.',
-    features: [
-      'Large flat plains biome',
-      'Mountain range nearby',
-      'Ocean access',
-      'Multiple villages in area'
-    ],
-    imageUrl: 'https://via.placeholder.com/400x300?text=Minecraft+Builder',
-    version: '1.20.4',
-    rating: 4.5,
-    Saves: 850
-  },
-  {
-    id: 3,
-    seed: '456789123',
-    title: 'Survival Island',
-    description: 'Start on a small island with all necessary resources nearby, perfect for a survival challenge.',
-    features: [
-      'Small starting island',
-      'Ocean monument nearby',
-      'Shipwreck with treasure',
-      'Coral reef access'
-    ],
-    imageUrl: 'https://via.placeholder.com/400x300?text=Minecraft+Island',
-    version: '1.20.4',
-    rating: 4.7,
-    Saves: 950
-  },
-  {
-    id: 4,
-    seed: '789123456',
-    title: 'Mega Biome Mix',
-    description: 'Experience multiple biomes in close proximity, including jungle, desert, and savanna.',
-    features: [
-      'Jungle temple',
-      'Desert village',
-      'Savanna with exposed mineshaft',
-      'Multiple biomes within 500 blocks'
-    ],
-    imageUrl: 'https://via.placeholder.com/400x300?text=Minecraft+Biomes',
-    version: '1.20.4',
-    rating: 4.6,
-    Saves: 750
-  }
-]
+import { supabase } from '@/lib/supabase'
+import { Seed } from '@/lib/supabase'
 
 export default function MinecraftSeeds() {
-  // State for favorites
+  // State for seeds and favorites
+  const [seeds, setSeeds] = useState<Seed[]>([])
   const [favorites, setFavorites] = useState<number[]>([])
   const [showFavorites, setShowFavorites] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // Fetch seeds on component mount
+  useEffect(() => {
+    const fetchSeeds = async () => {
+      try {
+        setLoading(true)
+        // First, get the Minecraft game ID
+        const { data: gameData, error: gameError } = await supabase
+          .from('games')
+          .select('id')
+          .eq('slug', 'minecraft')
+          .single()
+
+        if (gameError) throw gameError
+        if (!gameData) throw new Error('Minecraft game not found')
+
+        // Then fetch seeds for Minecraft
+        const { data: seedsData, error: seedsError } = await supabase
+          .from('seeds')
+          .select('*')
+          .eq('game_id', gameData.id)
+          .order('created_at', { ascending: false })
+
+        if (seedsError) throw seedsError
+        setSeeds(seedsData || [])
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred')
+        console.error('Error fetching seeds:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchSeeds()
+  }, [])
 
   // Toggle favorite status
   const toggleFavorite = (seedId: number) => {
@@ -95,8 +67,24 @@ export default function MinecraftSeeds() {
 
   // Filter seeds based on favorites toggle
   const displayedSeeds = showFavorites
-    ? minecraftSeeds.filter(seed => favorites.includes(seed.id))
-    : minecraftSeeds
+    ? seeds.filter(seed => favorites.includes(seed.id))
+    : seeds
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-xl">Loading seeds...</div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-xl text-red-600">Error: {error}</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -143,17 +131,19 @@ export default function MinecraftSeeds() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayedSeeds.map((seed) => (
             <div key={seed.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="h-48 relative">
-                <Image
-                  src={seed.imageUrl}
-                  alt={seed.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              {seed.image_url && (
+                <div className="h-48 relative">
+                  <Image
+                    src={seed.image_url}
+                    alt={seed.description}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
               <div className="p-6">
                 <div className="flex justify-between items-start mb-2">
-                  <h2 className="text-xl font-semibold">{seed.title}</h2>
+                  <h2 className="text-xl font-semibold">Seed: {seed.seed_code}</h2>
                   <button
                     onClick={() => toggleFavorite(seed.id)}
                     className={`p-2 rounded-full hover:bg-gray-100 ${
@@ -178,20 +168,17 @@ export default function MinecraftSeeds() {
                 </div>
                 <p className="text-gray-600 mb-4">{seed.description}</p>
                 <div className="mb-4">
-                  <h3 className="font-medium mb-2">Seed: <span className="font-mono">{seed.seed}</span></h3>
                   <ul className="list-disc list-inside text-sm text-gray-600">
-                    {seed.features.map((feature, index) => (
-                      <li key={index}>{feature}</li>
+                    {seed.tags.map((tag, index) => (
+                      <li key={index}>{tag}</li>
                     ))}
                   </ul>
                 </div>
                 <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
-                  <span>v{seed.version}</span>
+                  <span>{new Date(seed.created_at).toLocaleDateString()}</span>
                   <div className="flex items-center space-x-2">
-                    <span>{seed.rating} ★</span>
-                    {seed.Saves && (
-                      <span>{seed.Saves.toLocaleString()} saves</span>
-                    )}
+                    {seed.rating && <span>{seed.rating} ★</span>}
+                    <span>{seed.saves} saves</span>
                   </div>
                 </div>
                 <button className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors">

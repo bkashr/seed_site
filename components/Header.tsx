@@ -41,6 +41,22 @@ export default function Header() {
               Games
             </Link>
             <Link
+              href="/submit"
+              className={`text-gray-600 hover:text-gray-900 ${
+                pathname === '/submit' ? 'text-blue-600 font-medium' : ''
+              }`}
+            >
+              Submit Seed
+            </Link>
+            <Link
+              href="/test"
+              className={`text-gray-600 hover:text-gray-900 ${
+                pathname === '/test' ? 'text-blue-600 font-medium' : ''
+              }`}
+            >
+              Test DB
+            </Link>
+            <Link
               href="/contribute"
               className={`text-gray-600 hover:text-gray-900 ${
                 pathname === '/contribute' ? 'text-blue-600 font-medium' : ''

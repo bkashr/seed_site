@@ -1,72 +1,100 @@
 /**
  * FeaturedSeeds Component
  * 
- * This component displays a carousel of featured seeds
- * from different games.
+ * This component displays a carousel of featured seeds with their details.
  */
 
-import Image from 'next/image'
 import Link from 'next/link'
 
-// Sample featured seeds data
+// Sample data - This would typically come from your database
 const featuredSeeds = [
   {
     id: 1,
     game: 'Minecraft',
-    title: 'Speedrun Seed #123',
-    description: 'Quick nether access, stronghold at spawn',
-    imageUrl: 'https://via.placeholder.com/400x300?text=Minecraft+Seed',
-    gameSlug: 'minecraft'
+    title: 'Epic Mountain Range',
+    description: 'Discover a breathtaking mountain range with hidden caves and waterfalls.',
+    image: '/images/seeds/minecraft-mountains.jpg',
+    seed: '123456789',
+    rating: 4.8
   },
   {
     id: 2,
     game: 'Terraria',
-    title: 'Building Seed #456',
-    description: 'Perfect flat area for large builds',
-    imageUrl: 'https://via.placeholder.com/400x300?text=Terraria+Seed',
-    gameSlug: 'terraria'
+    title: 'Treasure Island',
+    description: 'A small island filled with rare treasures and unique biomes.',
+    image: '/images/seeds/terraria-island.jpg',
+    seed: '987654321',
+    rating: 4.6
   },
   {
     id: 3,
-    game: 'Balatro',
-    title: 'DNA Card Seed #789',
-    description: 'Early DNA card with perfect synergies',
-    imageUrl: 'https://via.placeholder.com/400x300?text=Balatro+Seed',
-    gameSlug: 'balatro'
+    game: 'No Man\'s Sky',
+    title: 'Paradise Planet',
+    description: 'A lush planet with perfect weather and abundant resources.',
+    image: '/images/seeds/nms-paradise.jpg',
+    seed: '456789123',
+    rating: 4.9
   }
 ]
 
 export default function FeaturedSeeds() {
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-8 text-center">Featured Seeds</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredSeeds.map((seed) => (
-            <Link 
-              key={seed.id} 
-              href={`/games/${seed.gameSlug}/seeds/${seed.id}`}
-              className="block"
-            >
-              <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="h-48 relative">
-                  <Image
-                    src={seed.imageUrl}
-                    alt={seed.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <span className="text-sm text-blue-500 font-medium">{seed.game}</span>
-                  <h3 className="text-xl font-semibold mt-2 mb-2">{seed.title}</h3>
-                  <p className="text-gray-600">{seed.description}</p>
-                </div>
+    <div className="relative">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-synth-dark via-synth-midnight to-synth-dark rounded-lg" />
+      
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-synth-grid opacity-10 rounded-lg" />
+      
+      {/* Scanlines overlay */}
+      <div className="absolute inset-0 bg-synth-scanlines opacity-5 rounded-lg" />
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        {featuredSeeds.map((seed) => (
+          <div 
+            key={seed.id}
+            className="synth-card p-6 hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="relative mb-4">
+              <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
+                <img 
+                  src={seed.image} 
+                  alt={seed.title}
+                  className="object-cover w-full h-full"
+                />
               </div>
-            </Link>
-          ))}
-        </div>
+              <div className="absolute top-2 left-2">
+                <span className="px-2 py-1 bg-synth-primary/20 text-synth-primary text-sm font-medium rounded">
+                  {seed.game}
+                </span>
+              </div>
+              <div className="absolute top-2 right-2">
+                <span className="px-2 py-1 bg-synth-secondary/20 text-synth-secondary text-sm font-medium rounded">
+                  {seed.rating} ★
+                </span>
+              </div>
+            </div>
+            
+            <h3 className="text-xl font-semibold text-synth-light mb-2 glow-text">
+              {seed.title}
+            </h3>
+            <p className="text-synth-light/70 mb-4 font-medium">
+              {seed.description}
+            </p>
+            <div className="flex items-center justify-between">
+              <span className="text-synth-primary font-medium">
+                Seed: {seed.seed}
+              </span>
+              <Link 
+                href={`/games/${seed.game.toLowerCase()}/seeds/${seed.id}`}
+                className="synth-button"
+              >
+                View Details
+              </Link>
+            </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </div>
   )
 } 

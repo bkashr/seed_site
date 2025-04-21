@@ -18,34 +18,33 @@ interface GameCardProps {
 
 export default function GameCard({ name, description, seeds, imageUrl, slug }: GameCardProps) {
   return (
-    <Link href={`/games/${slug}`} className="block">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-        {/* Game Image */}
-        <div className="h-48 relative">
-          <Image
-            src={imageUrl}
-            alt={name}
-            fill
-            className="object-cover"
-          />
-        </div>
-
-        {/* Game Info */}
-        <div className="p-6">
-          <h3 className="text-xl font-semibold mb-2">{name}</h3>
-          <p className="text-gray-600 mb-4">{description}</p>
-          
-          {/* Seed Count and Tags */}
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-500">
+    <div className="game-card pixel-border bg-white rounded-lg overflow-hidden">
+      <div className="relative h-48">
+        <Image
+          src={imageUrl}
+          alt={name}
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-game-dark to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <h3 className="text-2xl font-pixel text-white mb-2">{name}</h3>
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-game-light font-arcade">
               {seeds.toLocaleString()} seeds
-            </span>
-            <span className="text-blue-500 font-medium">
-              View Seeds →
             </span>
           </div>
         </div>
       </div>
-    </Link>
+      <div className="p-6">
+        <p className="text-gray-600 mb-4 font-arcade">{description}</p>
+        <Link
+          href={`/games/${slug}`}
+          className="game-button inline-block bg-game-primary text-white hover:bg-game-secondary"
+        >
+          View Seeds
+        </Link>
+      </div>
+    </div>
   )
 } 

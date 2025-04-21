@@ -1,70 +1,62 @@
 /**
  * Hero Component
  * 
- * This component displays the main hero section of the website,
- * including the site description and featured seed of the day.
+ * This component displays the hero section with site description
+ * and featured seed of the day.
  */
 
-import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Hero() {
   return (
-    <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex flex-col md:flex-row items-center">
-          {/* Left side - Site Description */}
-          <div className="md:w-1/2 mb-8 md:mb-0">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Find the Perfect Game Seed
-            </h1>
-            <p className="text-xl mb-8 text-blue-100">
-              Discover and share seeds for your favorite games. 
-              Whether you're speedrunning, building, or exploring,
-              find the perfect seed to enhance your gameplay.
+    <section className="relative pt-32 pb-16">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-synth-dark via-synth-midnight to-synth-dark" />
+      
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-synth-grid opacity-10" />
+      
+      {/* Scanlines overlay */}
+      <div className="absolute inset-0 bg-synth-scanlines opacity-5" />
+      
+      <div className="container mx-auto px-4 relative">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl font-semibold text-synth-light mb-6 glow-text">
+            Discover Amazing Game Seeds
+          </h1>
+          <p className="text-xl text-synth-light/70 mb-8 font-medium">
+            Find and share the best seeds for your favorite games. 
+            Join our community of gamers and discover unique experiences.
+          </p>
+          
+          {/* Seed of the Day */}
+          <div className="synth-card p-6 mb-8 inline-block">
+            <h2 className="text-xl font-semibold text-synth-light mb-2 glow-text">Seed of the Day</h2>
+            <p className="text-synth-light/70 mb-4 font-medium">
+              Minecraft Speedrun Seed #123
             </p>
-            <div className="flex space-x-4">
-              <Link 
-                href="/games"
-                className="bg-white text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors"
-              >
-                Browse Games
-              </Link>
-              <Link 
-                href="/about"
-                className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
-              >
-                Learn More
-              </Link>
-            </div>
+            <Link 
+              href="/games/minecraft/seeds/123"
+              className="synth-button inline-block"
+            >
+              View Seed
+            </Link>
           </div>
-
-          {/* Right side - Seed of the Day */}
-          <div className="md:w-1/2 md:pl-8">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <div className="flex items-center mb-4">
-                <span className="text-sm font-medium text-blue-200">Seed of the Day</span>
-                <span className="mx-2 text-blue-300">•</span>
-                <span className="text-sm text-blue-200">Minecraft</span>
-              </div>
-              
-              <h2 className="text-2xl font-bold mb-2">Speedrun Paradise</h2>
-              <p className="text-blue-100 mb-4">
-                Stronghold at spawn, nether fortress nearby, perfect for speedruns
-              </p>
-              
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-blue-200">Seed: <span className="font-mono">123456789</span></span>
-                <span className="text-sm text-blue-200">v1.20.4</span>
-              </div>
-
-              <Link 
-                href="/games/minecraft/seeds/1"
-                className="block w-full bg-white text-blue-600 text-center py-2 px-4 rounded hover:bg-blue-50 transition-colors"
-              >
-                View Seed
-              </Link>
-            </div>
+          
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href="/games"
+              className="synth-button"
+            >
+              Browse Games
+            </Link>
+            <Link 
+              href="/about"
+              className="synth-button bg-synth-secondary hover:bg-synth-primary"
+            >
+              Learn More
+            </Link>
           </div>
         </div>
       </div>

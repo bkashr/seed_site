@@ -1,4 +1,5 @@
-/* Import Tailwind CSS base styles, components, and utilities */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,22 +7,22 @@
 /* Define CSS variables for theming */
 :root {
   /* Text color in RGB format */
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 240, 240, 255;
   /* Gradient start color in RGB format */
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 15, 15, 26;
   /* Gradient end color in RGB format */
-  --background-end-rgb: 255, 255, 255;
+  --background-end-rgb: 26, 26, 46;
 }
 
 /* Dark mode color scheme */
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark mode text color */
-    --foreground-rgb: 255, 255, 255;
+    --foreground-rgb: 240, 240, 240;
     /* Dark mode gradient start color */
-    --background-start-rgb: 0, 0, 0;
+    --background-start-rgb: 26, 26, 46;
     /* Dark mode gradient end color */
-    --background-end-rgb: 0, 0, 0;
+    --background-end-rgb: 26, 26, 46;
   }
 }
 
@@ -31,9 +32,112 @@ body {
   color: rgb(var(--foreground-rgb));
   /* Create gradient background using CSS variables */
   background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    to bottom,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Game-like button styles */
+.game-button {
+  @apply px-6 py-3 rounded-lg font-medium transition-all duration-200;
+  @apply hover:scale-105 active:scale-95;
+  @apply shadow-lg hover:shadow-xl;
+}
+
+/* Pixel border effect */
+.pixel-border {
+  @apply border-4 border-game-dark;
+  box-shadow: 
+    4px 4px 0px theme('colors.game-dark'),
+    -4px -4px 0px theme('colors.game-dark'),
+    4px -4px 0px theme('colors.game-dark'),
+    -4px 4px 0px theme('colors.game-dark');
+}
+
+/* Game card hover effect */
+.game-card {
+  @apply transition-all duration-300;
+  @apply hover:scale-105 hover:rotate-1;
+}
+
+/* Achievement badge */
+.achievement-badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  @apply bg-game-primary text-white;
+  @apply animate-bounce;
+}
+
+@layer components {
+  .synth-card {
+    @apply bg-synth-midnight/50 backdrop-blur-sm rounded-xl border border-synth-primary/20 shadow-synth-glow hover:shadow-synth-glow-lg transition-all duration-300;
+  }
+
+  .synth-button {
+    @apply px-4 py-2 bg-synth-primary text-synth-dark rounded-lg font-medium 
+           hover:bg-synth-secondary transition-all duration-300 
+           shadow-synth-glow hover:shadow-synth-glow-lg;
+  }
+
+  .synth-text-gradient {
+    @apply bg-clip-text text-transparent bg-synth-gradient;
+  }
+
+  .synth-border {
+    @apply border border-synth-primary/20 shadow-synth-glow;
+  }
+
+  .synth-hover {
+    @apply hover:border-synth-primary/40 hover:shadow-synth-glow-lg transition-all duration-300;
+  }
+
+  .synth-pulse {
+    @apply animate-synth-pulse;
+  }
+
+  .synth-float {
+    @apply animate-synth-float;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--background-start-rgb));
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FF6AD5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C774E8;
+}
+
+/* Glow effect for text */
+.glow-text {
+  text-shadow: 0 0 10px rgba(255, 106, 213, 0.5);
+}
+
+/* Scanlines overlay */
+.scanlines {
+  position: relative;
+}
+
+.scanlines::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/images/backgrounds/scanlines.png');
+  opacity: 0.1;
+  pointer-events: none;
 } 
